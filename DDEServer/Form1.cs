@@ -39,8 +39,8 @@ namespace DDEServer
             // экспорта информации из терминала Quik. Имя раздела формируется так: [Имя книги]Имя листа,
             // где "Имя книги" и "Имя листа" указывается в меню Quik "Вывод через DDE сервер" - 
             // "Рабочая книга", "Лист"
-            server.AddTopic("RIH6");
-            server.AddTopic("SBER");
+            server.AddTopic("candle_RIZ6");
+            server.AddTopic("current");
             server.AddTopic("RIU30");
             //  server.AddTopic("[Book1]List2");
             //  server.AddTopic("[Book1]List3");
@@ -72,10 +72,10 @@ namespace DDEServer
             //ExchangeDataCell[,] dataCell = e.exchangeDataTable.ExchangeDataCells;
             portion++;
 
-            string LastCandleBase  = (from c in db.Table where c.Tiker == dataTable.TopicName.ToString() orderby c.DateTime descending select c.Id).Max().ToString();
+            //  string LastCandleBase  = (from c in db.Table where c.Tiker == dataTable.TopicName.ToString() orderby c.DateTime descending select c.Id).Max().ToString();
 
             int CandlesCount = 0;
-            label10.Text = LastCandleBase;
+            //label10.Text = LastCandleBase;
 
            // label8.Text = counter.ToString();
 
@@ -88,76 +88,69 @@ namespace DDEServer
             if(checkBox3.Checked == false)
             CandlesCount = 1;
 
+            System.Data.SqlClient.SqlConnection sqlConnection1 =
+                                  new System.Data.SqlClient.SqlConnection(@"Data Source=ROMANNB-ПК;Initial Catalog=C:\CANDLEBASE\DATABASE1.MDF;Integrated Security=True");
+
+            System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand();
+            cmd.CommandType = System.Data.CommandType.Text;
+           
+            cmd.Connection = sqlConnection1;
+
+            sqlConnection1.Open();
+
+
+
             // Ну и выводим полученную от терминала Quik информацию
-            for (int r = 1; r < dataTable.RowsLength; r++)
+            for (int r = 0; r < dataTable.RowsLength; r++)
             {
-             
-
-                    string TempID = dataTable.ExchangeDataCells[r, 0].DataCell.ToString() + dataTable.ExchangeDataCells[r, 1].DataCell.ToString() + dataTable.TopicName.ToString();
-                    string TempTiker = dataTable.TopicName.ToString();
-                    string TempTime = dataTable.ExchangeDataCells[r, 1].DataCell.ToString();
-                    Single TempOpen = Convert.ToSingle(dataTable.ExchangeDataCells[r, 2].DataCell.ToString().Replace(".", ","));
-                    Single TempClose = Convert.ToSingle(dataTable.ExchangeDataCells[r, 5].DataCell.ToString().Replace(".", ","));
-                    Single TempHigh = Convert.ToSingle(dataTable.ExchangeDataCells[r, 3].DataCell.ToString().Replace(".", ","));
-                    Single TempLow = Convert.ToSingle(dataTable.ExchangeDataCells[r, 4].DataCell.ToString().Replace(".", ","));
-                
-
-                    if ((dataTable.ExchangeDataCells[r, 0].DataCell.ToString() + dataTable.ExchangeDataCells[r, 1].DataCell.ToString() + dataTable.TopicName.ToString()).ToString() != LastCandleBase)
-                    {
-                        
-                        CandlesCount++;
-
-                        //здесь записываем новые свечи
-
-                        
-                        Table ord = new Table
-                        {
-
-                            Id = TempID,
-                            Tiker = TempTiker,
-                            Time = TempTime,
-                            Open = TempOpen,
-                            Close = TempClose,
-                            High = TempHigh,
-                            Low = TempLow,
-                            BSU = "",
-                            BPU = "",
-                            DateTime = Convert.ToInt64(dataTable.ExchangeDataCells[r, 0].DataCell.ToString() + dataTable.ExchangeDataCells[r, 1].DataCell.ToString()),
-                            Trade = "",
-                            Capital = Convert.ToSingle(StartCapital),
-                            TradeComment = "",MailSent="",
-                        };
-                        db.Table.InsertOnSubmit(ord);
-
-                    }
-                    else
-                    {
-                        if (CandlesCount > 0)
-                    {
-
-                       
-                        db.SubmitChanges();
-
-                        Signals(dataTable.TopicName.ToString());
-
-                        if(textBox5.Text == "1")
-                        TestSignals(dataTable.TopicName.ToString());
-                        if (textBox5.Text == "2")
-                            TestSignals2(dataTable.TopicName.ToString());
 
 
-                    }
+                            if (dataTable.TopicName.ToString().Contains("candle") == true)
+                            { 
+                            string TempID = dataTable.ExchangeDataCells[r, 0].DataCell.ToString() + dataTable.ExchangeDataCells[r, 1].DataCell.ToString() + dataTable.TopicName.ToString().Replace("candle", "");
+                            string TempTiker = dataTable.TopicName.ToString().Replace("candle","");
+                            string TempTime = dataTable.ExchangeDataCells[r, 1].DataCell.ToString();
+                            Single TempOpen = Convert.ToSingle(dataTable.ExchangeDataCells[r, 2].DataCell.ToString().Replace(".", ","));
+                            Single TempClose = Convert.ToSingle(dataTable.ExchangeDataCells[r, 5].DataCell.ToString().Replace(".", ","));
+                            Single TempHigh = Convert.ToSingle(dataTable.ExchangeDataCells[r, 3].DataCell.ToString().Replace(".", ","));
+                            Single TempLow = Convert.ToSingle(dataTable.ExchangeDataCells[r, 4].DataCell.ToString().Replace(".", ","));
 
-                    // появились новые свечи
 
-                    
-                        break;
-                    }
-                       
-                  
+
+                            cmd.CommandText = "INSERT INTO Candles (ID, Ticker, CandleTime, CandleHigh, CandleLow, CandleOpen, CandleClose) SELECT '" + TempID + "','" + TempTiker + "','" + TempTime + "','" + TempHigh + "','" + TempLow + "','" + TempOpen + "','" + TempClose + "' WHERE NOT EXISTS (SELECT ID FROM Candles WHERE ID = '" + TempID + "');";
+                            cmd.ExecuteNonQuery();
+
+                            }
+
+                if (dataTable.TopicName.ToString().Contains("current") == true)
+                {
+
+                    String TempChange, TempLast, TempOborot;
+                    string TempTicker = dataTable.ExchangeDataCells[r, 0].DataCell.ToString();
+                    TempChange = dataTable.ExchangeDataCells[r, 2].DataCell.ToString().Replace(",", ".");
+                   TempLast = dataTable.ExchangeDataCells[r, 3].DataCell.ToString().Replace(",", ".");
+                    TempOborot = dataTable.ExchangeDataCells[r, 4].DataCell.ToString().Replace(",", ".");
+                    if (TempChange == "")
+                        TempChange = "0.0";
+                    if (TempLast == "")
+                        TempLast = "0.0";
+
+                    if (TempOborot == "")
+                        TempOborot = "0.0";
+
+
+
+                    cmd.CommandText = "INSERT INTO dbo.[Current] (Ticker, Change, Last_price, Oborot) SELECT '" + TempTicker + "'," + TempChange + "," + TempLast + "," + TempOborot + " WHERE NOT EXISTS (SELECT Ticker FROM dbo.[Current] WHERE Ticker = '" + TempTicker + "');";
+                    cmd.CommandText = cmd.CommandText + "UPDATE dbo.[Current] SET Change = " + TempChange + ", Last_price = " + TempLast + ", Oborot = " + TempOborot + " where Ticker = '" + TempTicker + "' ;";
+
+                    cmd.ExecuteNonQuery();
+
                 }
 
-                                       
+
+            }
+
+            sqlConnection1.Close();
 
             label5.Text = CandlesCount.ToString();
 

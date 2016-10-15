@@ -1,0 +1,1 @@
+﻿UPDATE [Table] SET BPU = '';

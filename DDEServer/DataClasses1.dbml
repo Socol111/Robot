@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="C:\CANDLEBASE\DATABASE1.MDF" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=ROMANNB\SQLEXPRESS;Initial Catalog=C:\CANDLEBASE\DATABASE1.MDF;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="DDEServer.Properties.Settings" SettingsPropertyName="C__CANDLEBASE_DATABASE1_MDFConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.[Table]" Member="Table">
+    <Type Name="Table">
+      <Column Name="Id" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tiker" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Time" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="High" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="Low" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="[Open]" Member="Open" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="[Close]" Member="Close" Type="System.Single" DbType="Real" CanBeNull="true" />
+      <Column Name="BPU" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="BSU" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Trade" Type="System.String" DbType="NChar(10)" CanBeNull="true" />
+      <Column Name="Capital" Type="System.Single" DbType="Real NOT NULL" CanBeNull="false" />
+      <Column Name="DateTime" Type="System.Int64" DbType="BigInt" CanBeNull="true" />
+      <Column Name="TradeComment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="MailSent" Type="System.String" DbType="Char(10)" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

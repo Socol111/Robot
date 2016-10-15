@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuikDdeDataServer</name>
+    </assembly>
+    <members>
+        <member name="T:QuikDdeDataServer.ExchangeDataCell">
+            <summary>
+            Определение таблицы биржевых данных
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.ExchangeDataCell.DateCellSet(System.Object)">
+            <summary>
+            Определение содержания ячейки таблицы Quik (тип System.Object)
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.ExchangeDataCell.TypeCellSet(QuikDdeDataServer.TypeCell)">
+            <summary>
+            Определение типа данных в ячейке таблицы Quik (string или float).
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataCell.DataCell">
+            <summary>
+            Содержание ячейки таблицы Quik (тип System.Object)
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataCell.TypeCell">
+            <summary>
+            Тип данных в ячейке таблицы Quik (string или float).
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.TypeCell">
+            <summary>
+            Тип данных в ячейке таблицы (string или float).
+            </summary>
+        </member>
+        <member name="F:QuikDdeDataServer.TypeCell.StringType">
+            <summary>
+            Строка (string)
+            </summary>
+        </member>
+        <member name="F:QuikDdeDataServer.TypeCell.FloatType">
+            <summary>
+            Число (float)
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.ExchangeDataTable">
+            <summary>
+            Определение описания таблицы биржевых данных
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataTable.ExchangeDataCells">
+            <summary>
+            Содержание таблицы полученной из Quik
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataTable.TopicName">
+            <summary>
+            Имя раздела Quik соответствующего таблице
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataTable.RowsLength">
+            <summary>
+            Количество рядов таблицы полученной из Quik
+            </summary>
+        </member>
+        <member name="P:QuikDdeDataServer.ExchangeDataTable.ColsLength">
+            <summary>
+            Количество колонок таблицы полученной из Quik
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.DDECallBackDelegate">
+            <summary>
+            Делегат функции обратного вызова DDE
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.DDEML">
+            <summary>
+            Класс - отображение в среде .NET некоторых функций библиотеки DDEML
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.DdeInitializeHandler">
+            <summary>
+            Базовый обработчик, осуществляющий регистрацию сервера в <c>DDE</c>
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.#ctor(System.String)">
+            <summary>
+            Базовый обработчик, осуществляющий регистрацию сервера в <c>DDE</c>
+            </summary>
+            <param name="serverName"> Имя <c>DDE</c> сервера</param>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.DdeInitialize">
+            <summary>
+            Инициализация <c>DDE</c> сервера
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.AddTopic(System.String)">
+            <summary>
+            Регистрация раздела в <c>DDE</c> сервере
+            </summary>
+            <param name="topicName"> Название раздела</param>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.RemoveTopic(System.String)">
+            <summary>
+            Отмена регистрации раздела в <c>DDE</c> сервере
+            </summary>
+            <param name="topicName"> Название раздела</param>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.DdeUninitialize">
+            <summary>
+            Деинициализация <c>DDE</c> сервера и закрытие используемых внутренних ресурсов
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.Dispose(System.Boolean)">
+            <summary>
+            Завершение объекта
+            </summary>
+            <param name="disposing"></param>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.Dispose">
+            <summary>
+            Явное завершение объекта и закрытие используемых внутренних ресурсов
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.DdeInitializeHandler.Finalize">
+            <summary>
+            Неявное завершение объекта
+            </summary>
+        </member>
+        <member name="E:QuikDdeDataServer.DdeInitializeHandler.OnExchangeData">
+            <summary>
+            Событие <see cref="E:QuikDdeDataServer.DdeInitializeHandler.OnExchangeData"/> просходит при получении данных от терминала Quik
+            </summary>
+        </member>
+        <member name="T:QuikDdeDataServer.DataEventArgs">
+            <summary>
+            Аргумент события OnExchangeData.
+            </summary>
+        </member>
+        <member name="M:QuikDdeDataServer.DataEventArgs.#ctor(QuikDdeDataServer.ExchangeDataTable)">
+            <summary>
+            Аргумент события OnExchangeData
+            </summary>
+            <param name="table"></param>
+        </member>
+        <member name="P:QuikDdeDataServer.DataEventArgs.exchangeDataTable">
+            <summary>
+            Определение таблицы биржевых данных
+            </summary>
+        </member>
+    </members>
+</doc>

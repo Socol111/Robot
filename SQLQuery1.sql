@@ -1,0 +1,1 @@
+﻿uPDATE [Table] SET Trade = '';
